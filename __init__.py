@@ -12,13 +12,13 @@ class RadioFieldWithOtherRenderer(forms.widgets.RadioFieldRenderer):
             if radio.choice_label.lower() == 'other':
                 if self.value and self.value not in [c[0] for c in self.choices]:
                     radio = forms.widgets.RadioInput(self.name, radio.choice_value, self.attrs.copy(), choice, i)
-                    radio = u'<li>%s <input type="text" name="other_%s" value="%s" /></li>'% (force_unicode(radio), radio.name, self.value)
+                    radio = u'%s <input type="text" name="other_%s" value="%s" checked="checked" />'% (force_unicode(radio), radio.name, self.value)
                 else:
-                    radio = u'<li>%s <input type="text" name="other_%s" /></li>'% (force_unicode(radio), radio.name)
+                    radio = u'%s <input type="text" name="other_%s" onclick="document.getElementById(\'id_%s_%s\').checked=true"/>'% (force_unicode(radio), radio.name, radio.name, i)
             else:
-                radio = u'<li>%s</li>'% force_unicode(radio)
-            radio_list.append(radio)
-        return mark_safe(u'<ul>\n%s\n</ul>' % u'\n'.join(radio_list))
+                radio = u'%s'% force_unicode(radio)
+            radio_list.append(u'<div class="radio-option">%s</div>' % radio)
+        return mark_safe(u'<div class="radio-options">\n%s\n</div>' % u'\n'.join(radio_list))
 
 class RadioSelectWithOtherWidget(forms.RadioSelect):
     renderer = RadioFieldWithOtherRenderer
